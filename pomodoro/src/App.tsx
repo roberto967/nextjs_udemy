@@ -6,7 +6,7 @@ import './styles/global.css';
 export function App() {
   return (
     <>
-      <Heading />
+      <Heading title="Oie props!" />
 
       <p>Texto qualquer</p>
     </>
