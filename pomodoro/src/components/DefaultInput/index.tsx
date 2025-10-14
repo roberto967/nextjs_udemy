@@ -14,7 +14,7 @@ export function DefaultInput({
   return (
     <>
       <label htmlFor={id}>{LabelText}</label>
-      <input type={type} id={id} {...rest} />
+      <input className={styles.input} type={type} id={id} {...rest} />
     </>
   );
 }

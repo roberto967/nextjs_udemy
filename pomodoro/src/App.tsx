@@ -1,4 +1,4 @@
-import { Heading } from './components/Heading';
+// import { Heading } from './components/Heading';
 import { Container } from './components/Container';
 import { Logo } from './components/Logo';
 import { Menu } from './components/Menu';
@@ -25,12 +25,13 @@ export function App() {
 
       <form action='#'>
         <div className='formRow'>
-          <DefaultInput id='meuInput1' type='text' LabelText='Task' />
+          <DefaultInput
+            id='meuInput1'
+            type='text'
+            LabelText='Task'
+            placeholder='digite algo'
+          />
         </div>
-
-        {/* <div className='formRow'>
-          <DefaultInput />
-        </div> */}
       </form>
     </>
   );
