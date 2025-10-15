@@ -104,6 +104,31 @@ useEffect(() => {
 }, [dependencias]);
 ```
 
+### UseContext
+
+Permite compartilhar dados entre componentes sem precisar passar props
+manualmente em cada nível da árvore de componentes. É útil para temas,
+autenticação e configurações globais. Exemplo:
+
+```tsx
+const MeuContexto = React.createContext(valorInicial);
+function Componente() {
+  const valor = useContext(MeuContexto);
+  return <div>{valor}</div>;
+}
+```
+
+#### Provedor de contexto
+
+O provedor de contexto é um componente que envolve a árvore de componentes e
+fornece o valor do contexto para todos os componentes filhos. Exemplo:
+
+```tsx
+<MeuContexto.Provider value={valor}>
+  <ComponenteFilho />
+</MeuContexto.Provider>
+```
+
 ## Local Storage
 
 O local storage é uma forma de armazenamento de dados persistente, ou seja, os
@@ -120,3 +145,25 @@ const valor = localStorage.getItem('chave');
 localStorage.removeItem('chave');
 localStorage.clear();
 ```
+
+É importante lembrar que o local storage tem um limite de armazenamento, que
+pode variar entre os navegadores, mas geralmente é em torno de 5MB por domínio.
+Além disso, os dados armazenados no local storage são acessíveis por qualquer
+script que rode na mesma origem, o que pode representar um risco de segurança se
+dados sensíveis forem armazenados lá. Para usar o local storage em conjunto com
+o React, é comum utilizar o hook `useEffect` para sincronizar o estado do
+componente com os dados armazenados no local storage. Exemplo:
+
+```tsx
+const [valor, setValor] = useState(() => {
+  return localStorage.getItem('chave') || '';
+});
+
+useEffect(() => {
+  localStorage.setItem('chave', valor);
+}, [valor]);
+```
+
+Dessa forma, o estado do componente será inicializado com o valor armazenado no
+local storage e sempre que o estado for atualizado, o valor no local storage
+será atualizado também.
