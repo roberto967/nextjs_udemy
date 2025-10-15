@@ -11,7 +11,6 @@ import { PlayCircleIcon } from 'lucide-react';
 import './styles/theme.css';
 import './styles/global.css';
 import { Footer } from './components/Footer';
-import { useState } from 'react';
 
 export function App() {
   // const [numero, setNumero] = useState(0);
