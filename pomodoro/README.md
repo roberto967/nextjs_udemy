@@ -3,6 +3,37 @@
 - css modules
 - childrens
 - react hooks
+- local storage
+
+## CSS Modules
+
+'CSS Modules' é uma técnica que permite escrever estilos CSS de forma modular e
+isolada para cada componente. Isso evita conflitos de nomes e facilita a
+manutenção do código. Exemplo:
+
+```tsx
+import styles from './Componente.module.css';
+function Componente() {
+  return <div className={styles.classeDoComponente}>Conteúdo</div>;
+}
+```
+
+## Childrens
+
+'Childrens' é uma propriedade do React que permite passar elementos filhos para
+um componente. É útil para criar componentes reutilizáveis e flexíveis. Exemplo:
+
+```tsx
+function ComponentePai({ children }) {
+  return <div className='pai'>{children}</div>;
+}
+```
+
+```tsx
+<ComponentePai>
+  <h1>Olá, mundo!</h1>
+</ComponentePai>
+```
 
 ## React Hooks
 
@@ -71,4 +102,21 @@ useEffect(() => {
     // código de limpeza
   };
 }, [dependencias]);
+```
+
+## Local Storage
+
+O local storage é uma forma de armazenamento de dados persistente, ou seja, os
+dados não serão deletados se o navegador for fechado, que permite que dados
+sejam salvos diretamente no navegador.
+
+Os dados são armazenados em um formato de chave-valor, sendo que o valor sempre
+será armazenado no formato string, o que significa que na hora de acessar os
+dados armazenados pode ser preciso fazer algum tipo de conversão. Exemplo:
+
+```tsx
+localStorage.setItem('chave', 'valor');
+const valor = localStorage.getItem('chave');
+localStorage.removeItem('chave');
+localStorage.clear();
 ```
