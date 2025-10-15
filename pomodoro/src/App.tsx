@@ -10,6 +10,7 @@ import { PlayCircleIcon } from 'lucide-react';
 
 import './styles/theme.css';
 import './styles/global.css';
+import { Footer } from './components/Footer';
 
 export function App() {
   return (
@@ -44,6 +45,10 @@ export function App() {
           <DefaultButton id='meuBotao' icon={<PlayCircleIcon />} />
         </div>
       </form>
+
+      <Container>
+        <Footer />
+      </Container>
     </>
   );
 }
