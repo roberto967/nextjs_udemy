@@ -7,6 +7,7 @@ import { CountDown } from './components/Countdown';
 import './styles/theme.css';
 import './styles/global.css';
 import { DefaultInput } from './components/DefaultInput';
+import { Cycles } from './components/Cycles';
 
 export function App() {
   return (
@@ -31,6 +32,10 @@ export function App() {
             LabelText='Task'
             placeholder='digite algo'
           />
+        </div>
+
+        <div className='formRow'>
+          <Cycles />
         </div>
       </form>
     </>
