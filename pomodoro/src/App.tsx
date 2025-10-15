@@ -3,11 +3,13 @@ import { Container } from './components/Container';
 import { Logo } from './components/Logo';
 import { Menu } from './components/Menu';
 import { CountDown } from './components/Countdown';
+import { DefaultInput } from './components/DefaultInput';
+import { Cycles } from './components/Cycles';
+import { DefaultButton } from './components/DefaultButton';
+import { PlayCircleIcon } from 'lucide-react';
 
 import './styles/theme.css';
 import './styles/global.css';
-import { DefaultInput } from './components/DefaultInput';
-import { Cycles } from './components/Cycles';
 
 export function App() {
   return (
@@ -36,6 +38,10 @@ export function App() {
 
         <div className='formRow'>
           <Cycles />
+        </div>
+
+        <div className='formRow'>
+          <DefaultButton id='meuBotao' icon={<PlayCircleIcon />} />
         </div>
       </form>
     </>
