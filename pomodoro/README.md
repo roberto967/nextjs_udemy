@@ -4,6 +4,7 @@
 - childrens
 - react hooks
 - local storage
+- useReducer
 
 ## CSS Modules
 
@@ -169,6 +170,8 @@ function incrementar() {
 }
 return <button onClick={incrementar}>Incrementar {count}</button>;
 ```
+
+### useReducer
 
 ## Local Storage
 
