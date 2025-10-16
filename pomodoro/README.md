@@ -129,6 +129,47 @@ fornece o valor do contexto para todos os componentes filhos. Exemplo:
 </MeuContexto.Provider>
 ```
 
+### useRef
+
+O useRef é um hook que permite criar uma referência mutável que persiste entre
+renderizações. Ele é comumente usado para acessar elementos DOM diretamente ou
+para armazenar valores mutáveis que não causam uma nova renderização quando são
+alterados. Exemplo:
+
+```tsx
+const minhaRef = useRef(null);
+useEffect(() => {
+  if (minhaRef.current) {
+    minhaRef.current.focus();
+  }
+}, []);
+return <input ref={minhaRef} />;
+```
+
+Não serve pra coisas que precisam causar uma nova renderização, como o estado de
+um componente. Nesse caso, deve ser usado o useState.
+
+Re-renderização ❌ Não acontece. A UI fica desatualizada.
+
+```tsx
+const countRef = useRef(0);
+function incrementar() {
+  countRef.current += 1;
+  console.log(countRef.current);
+}
+return <button onClick={incrementar}>Incrementar</button>;
+```
+
+Re-renderização ✔️ Acontece. A UI é atualizada.
+
+```tsx
+const [count, setCount] = useState(0);
+function incrementar() {
+  setCount(count + 1);
+}
+return <button onClick={incrementar}>Incrementar {count}</button>;
+```
+
 ## Local Storage
 
 O local storage é uma forma de armazenamento de dados persistente, ou seja, os
