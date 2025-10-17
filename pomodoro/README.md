@@ -1,9 +1,18 @@
+# Projeto Pomodoro
+
+Este é um projeto de um aplicativo Pomodoro desenvolvido com React(Vite) e
+TypeScript. O objetivo do aplicativo é ajudar os usuários a gerenciar seu tempo
+de forma mais eficiente, utilizando a técnica Pomodoro.
+
 ## Conceitos importantes:
+
+Alguns conceitos importantes abordados neste projeto incluem:
 
 - css modules
 - childrens
 - react hooks
 - local storage
+- WebWorkers
 
 ## CSS Modules
 
@@ -208,3 +217,24 @@ useEffect(() => {
 Dessa forma, o estado do componente será inicializado com o valor armazenado no
 local storage e sempre que o estado for atualizado, o valor no local storage
 será atualizado também.
+
+## WebWorkers
+
+WebWorkers são scripts que rodam em segundo plano, separados da thread principal
+do navegador. Eles permitem que tarefas pesadas sejam executadas sem bloquear a
+interface do usuário, melhorando a responsividade do aplicativo. Os WebWorkers
+se comunicam com a thread principal por meio de mensagens, permitindo que dados
+sejam enviados e recebidos de forma assíncrona. Exemplo de criação e uso de um
+WebWorker:
+
+```tsx
+const meuWorker = new Worker('caminho/para/meuWorker.ts');
+meuWorker.postMessage({ tipo: 'iniciar', dados: { ... } });
+meuWorker.onmessage = (event) => {
+  console.log('Mensagem do worker:', event.data);
+};
+```
+
+WebWorkers são úteis para tarefas como processamento de dados, cálculos
+complexos e manipulação de arquivos, onde a execução na thread principal poderia
+causar lentidão ou travamentos na interface do usuário.
