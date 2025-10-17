@@ -6,43 +6,17 @@ import {
   SunIcon,
 } from 'lucide-react';
 import styles from './styles.module.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useTheme } from '../../hooks/useTheme';
 
 // <a/> depois vai ser link do router
-
-type availableThemes = 'dark' | 'light';
 
 type MenuItem = {
   icon: React.ElementType;
 } & React.ComponentProps<'a'>;
 
 export function Menu() {
-  const [theme, setTheme] = useState<availableThemes>(() => {
-    const savedTheme = localStorage.getItem('theme') as
-      | availableThemes
-      | 'dark';
-    return savedTheme;
-  });
-
-  // useEffect(() => {
-  //   console.log('Use effect sem dependencia');
-  // });
-
-  // useEffect(() => {
-  //   console.log(
-  //     'executa apenas quando o react monta o componente pela primeira vez',
-  //   );
-  // }, []);
-
-  useEffect(() => {
-    // console.log('Use effect com dependencia de tema');
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-
-    return () => {
-      // console.log('cleanup do tema');
-    };
-  }, [theme]); // toda vez que o tema mudar, o useEffect é executado
+  const [theme, toggleTheme] = useTheme();
 
   const nextThemeIcon: React.ElementType =
     theme === 'dark' ? SunIcon : MoonIcon;
@@ -73,23 +47,21 @@ export function Menu() {
       title: 'Mudar tema',
       onClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
-        setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
+
+        toggleTheme();
       },
     },
   ];
 
   return (
     <div className={styles.menu}>
-      {menuItems.map(item => (
+      {menuItems.map(({ icon: Icon, id, ...restProps }) => (
         <a
-          key={item['aria-label']}
+          key={`menu-item-${id}_${restProps.title}`}
           className={styles['menu-link']}
-          href={item.href}
-          aria-label={item['aria-label']}
-          title={item.title}
-          onClick={item.onClick}
+          {...restProps}
         >
-          <item.icon />
+          <Icon />
         </a>
       ))}
     </div>
