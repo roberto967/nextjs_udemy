@@ -1,4 +1,4 @@
-let instance: Worker | null = null;
+let instance: TimerWorkerManager | null = null;
 
 export class TimerWorkerManager {
   private worker: Worker;
@@ -7,23 +7,23 @@ export class TimerWorkerManager {
     this.worker = new Worker(new URL('./timerWorker.ts', import.meta.url));
   }
 
-  public static getInstance(): Worker {
+  static getInstance(): TimerWorkerManager {
     if (!instance) {
-      const manager = new TimerWorkerManager();
-      instance = manager.worker;
+      instance = new TimerWorkerManager();
     }
+
     return instance;
   }
 
-  public postMessage(message: any) {
+  public postMessage(message: any): void {
     this.worker.postMessage(message);
   }
 
-  public onMessage(handler: (event: MessageEvent) => void) {
+  public onmessage(handler: (event: MessageEvent) => void): void {
     this.worker.onmessage = handler;
   }
 
-  public terminate() {
+  public terminate(): void {
     this.worker.terminate();
     instance = null;
   }
