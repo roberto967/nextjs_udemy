@@ -9,6 +9,7 @@ import { getNextCycle } from '../../utils/getNextCycle';
 import { getNextTypeCycle } from '../../utils/getNextTypeCycle';
 import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
 import { Tips } from '../Tips';
+import { showMessage } from '../../adapters/showMessage';
 
 import styles from './styles.module.css';
 
@@ -22,13 +23,14 @@ export function MainForm() {
 
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    showMessage.dismiss();
 
     if (!taskNameInputRef.current) throw new Error('input ref is null');
 
     const taskName = taskNameInputRef.current.value.trim();
 
     if (!taskName) {
-      alert('Please enter a task name.');
+      showMessage.warning('Informe o nome da tarefa antes de iniciar.');
       return;
     }
 
