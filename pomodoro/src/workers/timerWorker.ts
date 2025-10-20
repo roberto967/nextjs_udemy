@@ -17,8 +17,6 @@ self.onmessage = function (event: MessageEvent<TaskStateModel>) {
 
   const endDate = activeTask.startDate + secondsRemaining * 1000;
 
-  console.log(new Date(endDate));
-
   function tick() {
     const now = Date.now();
     const secondsLeft = Math.round((endDate - now) / 1000);

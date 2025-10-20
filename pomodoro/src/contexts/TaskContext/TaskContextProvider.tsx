@@ -19,8 +19,6 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
   worker.onmessage((event: MessageEvent<number>) => {
     const secondsLeft = event.data;
 
-    console.log(secondsLeft);
-
     if (secondsLeft <= 0) {
       if (playBeepRef.current) {
         playBeepRef.current();
@@ -29,7 +27,6 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       dispatch({
         type: TaskActionsTypes.COMPLETE_TASK,
       });
-      console.log('WORKER MORTO');
       worker.terminate();
     } else {
       dispatch({
@@ -41,7 +38,6 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
 
   useEffect(() => {
     if (!state.activeTask) {
-      console.log('matou o worker, sem tarefa');
       worker.terminate();
     }
 
