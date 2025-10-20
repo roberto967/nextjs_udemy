@@ -14,7 +14,13 @@ export function DefaultInput({
   return (
     <>
       <label htmlFor={id}>{LabelText}</label>
-      <input className={styles.input} type={type} id={id} {...props} />
+      <input
+        className={styles.input}
+        type={type}
+        id={id}
+        {...props}
+        autoComplete='off'
+      />
     </>
   );
 }

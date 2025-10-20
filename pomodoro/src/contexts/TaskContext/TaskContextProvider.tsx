@@ -3,6 +3,7 @@ import { initialTaskState } from './initiaTaskState';
 import { TaskContext } from './TaskContext';
 import { taskReducer } from './taskReducer';
 import { TimerWorkerManager } from '../../workers/TimerWorkerManager';
+import { TaskActionsTypes } from './taskActions';
 
 type TaskContextProviderProps = {
   children: React.ReactNode;
@@ -13,14 +14,22 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
 
   const worker = TimerWorkerManager.getInstance();
 
-  worker.onmessage((event: MessageEvent) => {
-    const secondsLeft = event.data as number;
+  worker.onmessage((event: MessageEvent<number>) => {
+    const secondsLeft = event.data;
 
     console.log(secondsLeft);
 
     if (secondsLeft <= 0) {
+      dispatch({
+        type: TaskActionsTypes.COMPLETE_TASK,
+      });
       console.log('WORKER MORTO');
       worker.terminate();
+    } else {
+      dispatch({
+        type: TaskActionsTypes.COUNT_DOWN,
+        payload: { secondsRemaining: secondsLeft },
+      });
     }
   });
 

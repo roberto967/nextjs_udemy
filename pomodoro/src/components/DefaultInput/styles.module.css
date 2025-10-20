@@ -8,6 +8,7 @@
   border: 0.2rem solid transparent;
   border-bottom: 0.2rem solid var(--primary);
   transition: all 0.1s ease-in-out;
+  /* border-radius: 0.8rem; */
 }
 
 .input:focus {
