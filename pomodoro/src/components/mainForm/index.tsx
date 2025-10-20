@@ -16,6 +16,8 @@ import styles from './styles.module.css';
 export function MainForm() {
   const { state, dispatch } = useTaskContext();
 
+  const lastTaskName = state.tasks[state.tasks.length - 1]?.name || '';
+
   const taskNameInputRef = useRef<HTMLInputElement>(null);
 
   const nextCycle = getNextCycle(state.currentCycle);
@@ -59,6 +61,7 @@ export function MainForm() {
           ref={taskNameInputRef}
           required
           disabled={!!state.activeTask}
+          defaultValue={lastTaskName}
         />
       </div>
 
