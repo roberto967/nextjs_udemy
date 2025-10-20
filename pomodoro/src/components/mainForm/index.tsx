@@ -8,6 +8,7 @@ import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { getNextCycle } from '../../utils/getNextCycle';
 import { getNextTypeCycle } from '../../utils/getNextTypeCycle';
 import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
+import { Tips } from '../Tips';
 
 import styles from './styles.module.css';
 
@@ -46,7 +47,24 @@ export function MainForm() {
 
   return (
     <form onSubmit={handleCreateNewTask} action='#'>
-      <h1>num: {taskNameInputRef.current?.value}</h1>
+      {/* <button
+        type='button'
+        onClick={() => {
+          // Especifico do vite para criar web workers
+          const worker = new Worker(
+            new URL('../../workers/timerWorker.ts', import.meta.url),
+          );
+
+          worker.postMessage(`1 Nova tarefa iniciada`);
+          worker.onmessage = function (e) {
+            console.log('2 Mensagem do Worker: ', e.data);
+            console.log('----------');
+          };
+        }}
+      >
+        Iniciar
+      </button> */}
+      {/* <h1>num: {taskNameInputRef.current?.value}</h1> */}
       <div className='formRow'>
         <DefaultInput
           id='meuInput1'
@@ -61,7 +79,7 @@ export function MainForm() {
       </div>
 
       <div className='formRow'>
-        <p>Próximo ciclo será de {state.config[nextTypeCycle]} minutos</p>
+        <Tips />
       </div>
 
       {state.currentCycle > 0 && (
