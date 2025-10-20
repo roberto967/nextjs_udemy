@@ -5,8 +5,11 @@ import { Heading } from '../../components/Heading';
 import { MainTemplate } from '../../templates/MainTemplate';
 
 import style from './style.module.css';
+import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 
 export function History() {
+  const { state } = useTaskContext();
+
   return (
     <MainTemplate>
       <Container>
@@ -44,6 +47,21 @@ export function History() {
                   <td>Concluído</td>
                   <td>Estudo</td>
                 </tr>
+                {state.tasks.map(task => (
+                  <tr key={task.id}>
+                    <td>{task.name}</td>
+                    <td>{task.duration} minutos</td>
+                    <td>{new Date(task.startDate).toLocaleString()}</td>
+                    <td>
+                      {task.completeDate
+                        ? 'Concluído'
+                        : task.interruptDate
+                          ? 'Interrompido'
+                          : 'Em andamento'}
+                    </td>
+                    <td>{task.type}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
