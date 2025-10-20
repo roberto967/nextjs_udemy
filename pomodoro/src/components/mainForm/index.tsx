@@ -47,6 +47,15 @@ export function MainForm() {
     };
 
     dispatch({ type: TaskActionsTypes.START_TASK, payload: newTask });
+    showMessage.success('Tarefa iniciada com sucesso!');
+  }
+
+  function handleInterruptTask() {
+    showMessage.dismiss();
+    dispatch({
+      type: TaskActionsTypes.INTERRUPT_TASK,
+    });
+    showMessage.warning('Tarefa interrompida!');
   }
 
   return (
@@ -91,11 +100,7 @@ export function MainForm() {
             aria-label='Interromper tarefa atual'
             icon={<StopCircleIcon />}
             color='red'
-            onClick={() =>
-              dispatch({
-                type: TaskActionsTypes.INTERRUPT_TASK,
-              })
-            }
+            onClick={handleInterruptTask}
             key={'stopButton'}
           />
         )}
