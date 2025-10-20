@@ -5,11 +5,11 @@ import {
   Settings2Icon,
   SunIcon,
 } from 'lucide-react';
-import styles from './styles.module.css';
 import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
+import { RouterLink } from '../RouterLink';
 
-// <a/> depois vai ser link do router
+import styles from './styles.module.css';
 
 type MenuItem = {
   icon: React.ElementType;
@@ -23,19 +23,19 @@ export function Menu() {
 
   const menuItems: MenuItem[] = [
     {
-      href: '#',
+      href: '/',
       icon: HomeIcon,
       'aria-label': 'Ir para a página inicial',
       title: 'Ir para a página inicial',
     },
     {
-      href: '#',
+      href: '/history/',
       icon: HistoryIcon,
       'aria-label': 'Ver  histórico',
       title: 'Ver  histórico',
     },
     {
-      href: '#',
+      href: '/settings/',
       icon: Settings2Icon,
       'aria-label': 'Ir para a página de configurações',
       title: 'Ir para a página de configurações',
@@ -55,14 +55,15 @@ export function Menu() {
 
   return (
     <div className={styles.menu}>
-      {menuItems.map(({ icon: Icon, id, ...restProps }) => (
-        <a
+      {menuItems.map(({ icon: Icon, href, id, ...restProps }) => (
+        <RouterLink
           key={`menu-item-${id}_${restProps.title}`}
           className={styles['menu-link']}
+          href={href || '#'}
           {...restProps}
         >
           <Icon />
-        </a>
+        </RouterLink>
       ))}
     </div>
   );

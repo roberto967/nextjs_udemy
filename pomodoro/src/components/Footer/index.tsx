@@ -1,10 +1,12 @@
+import { RouterLink } from '../RouterLink';
 import styles from './styles.module.css';
 
 export function Footer() {
   return (
     <footer className={styles.footer}>
-      <a href='#'>Entenda como funciona o Pomodoro 🍅</a>
-      <a href='#'>Saiba mais sobre técnicas de produtividade</a>
+      <RouterLink href='/about-pomodoro'>
+        Entenda como funciona o Pomodoro 🍅
+      </RouterLink>
     </footer>
   );
 }
