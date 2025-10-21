@@ -147,13 +147,6 @@ export function History() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Estudar React</td>
-                    <td>25 minutos</td>
-                    <td>01/01/2023 08:00</td>
-                    <td>Concluído</td>
-                    <td>Estudo</td>
-                  </tr>
                   {sortTasksOptions.tasks.map(task => {
                     const taskTypeDic = {
                       workTime: 'Foco',
