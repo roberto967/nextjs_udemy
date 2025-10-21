@@ -6,7 +6,7 @@ import { Heading } from '../../components/Heading';
 import { MainTemplate } from '../../templates/MainTemplate';
 
 import style from './styles.module.css';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { showMessage } from '../../adapters/showMessage';
 import { toast } from 'react-toastify';
@@ -14,6 +14,10 @@ import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
 
 export function Settings() {
   const { state, dispatch } = useTaskContext();
+
+  useEffect(() => {
+    document.title = `Configurações ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
+  }, [state]);
 
   const workTimeInputRef = useRef<HTMLInputElement>(null);
   const shortBreakTimeInputRef = useRef<HTMLInputElement>(null);

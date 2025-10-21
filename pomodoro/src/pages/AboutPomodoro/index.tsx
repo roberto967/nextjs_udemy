@@ -1,10 +1,18 @@
+import { useEffect } from 'react';
 import { Container } from '../../components/Container';
 import { GenericHtml } from '../../components/GenericHtml';
 import { Heading } from '../../components/Heading';
 import { RouterLink } from '../../components/RouterLink';
 import { MainTemplate } from '../../templates/MainTemplate';
+import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 
 export function AboutPomodoro() {
+  const { state } = useTaskContext();
+
+  useEffect(() => {
+    document.title = `Sobre a Técnica Pomodoro ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
+  }, [state]);
+
   return (
     <MainTemplate>
       <Container>

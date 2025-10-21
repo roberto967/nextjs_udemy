@@ -47,6 +47,10 @@ export function History() {
     }));
   }, [state.tasks]);
 
+  useEffect(() => {
+    document.title = `Histórico ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
+  }, [state]);
+
   function handleSortTasks({ field }: Pick<SortTaskOptions, 'field'>) {
     if (state.tasks.length <= 1) return;
 
