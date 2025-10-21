@@ -6,6 +6,7 @@ import { MainTemplate } from '../../templates/MainTemplate';
 
 import style from './style.module.css';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
+import { formatDate } from '../../utils/formatDate';
 
 export function History() {
   const { state } = useTaskContext();
@@ -51,7 +52,7 @@ export function History() {
                   <tr key={task.id}>
                     <td>{task.name}</td>
                     <td>{task.duration} minutos</td>
-                    <td>{new Date(task.startDate).toLocaleString()}</td>
+                    <td>{formatDate(new Date(task.startDate))}</td>
                     <td>
                       {task.completeDate
                         ? 'Concluído'
