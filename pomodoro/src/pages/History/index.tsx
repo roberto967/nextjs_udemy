@@ -104,8 +104,12 @@ export function History() {
                 aria-label='Limpar histórico'
                 title='Apagar histórico'
                 onClick={handleClearHistory}
-                disabled={!hasTasksInHistory}
-                color={!hasTasksInHistory ? 'disabled' : 'red'}
+                disabled={!hasTasksInHistory || state.activeTask !== null}
+                color={
+                  !hasTasksInHistory || state.activeTask !== null
+                    ? 'disabled'
+                    : 'red'
+                }
               />
             </span>
           </Heading>
