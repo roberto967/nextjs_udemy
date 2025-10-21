@@ -59,8 +59,8 @@ export function MainForm() {
   }
 
   return (
-    <form onSubmit={handleCreateNewTask} action='#'>
-      <div className='formRow'>
+    <form onSubmit={handleCreateNewTask} action='#' className={styles.form}>
+      <div className={styles.formRow}>
         <DefaultInput
           id='meuInput1'
           type='text'
@@ -74,17 +74,17 @@ export function MainForm() {
         />
       </div>
 
-      <div className='formRow'>
+      <div className={styles.formRow}>
         <Tips />
       </div>
 
       {state.currentCycle > 0 && (
-        <div className='formRow'>
+        <div className={styles.formRow}>
           <Cycles />
         </div>
       )}
 
-      <div className='formRow'>
+      <div className={styles.formRow}>
         {!state.activeTask ? (
           <DefaultButton
             type='submit'
