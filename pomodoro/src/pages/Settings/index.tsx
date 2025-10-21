@@ -10,9 +10,10 @@ import { useRef } from 'react';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { showMessage } from '../../adapters/showMessage';
 import { toast } from 'react-toastify';
+import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
 
 export function Settings() {
-  const { state } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
 
   const workTimeInputRef = useRef<HTMLInputElement>(null);
   const shortBreakTimeInputRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,16 @@ export function Settings() {
       return;
     }
 
-    console.log('SALVAR');
+    dispatch({
+      type: TaskActionsTypes.UPDATE_CONFIG,
+      payload: {
+        workTime,
+        shortBreakTime,
+        longBreakTime,
+      },
+    });
+
+    showMessage.success('Configurações salvas com sucesso!');
   }
 
   return (

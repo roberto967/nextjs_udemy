@@ -6,6 +6,7 @@ export const enum TaskActionsTypes {
   RESET_STATE = 'RESET_STATE',
   COUNT_DOWN = 'COUNT_DOWN',
   COMPLETE_TASK = 'COMPLETE_TASK',
+  UPDATE_CONFIG = 'UPDATE_CONFIG',
 }
 
 export type TaskActionModel =
@@ -24,4 +25,12 @@ export type TaskActionModel =
     }
   | {
       type: TaskActionsTypes.RESET_STATE;
+    }
+  | {
+      type: TaskActionsTypes.UPDATE_CONFIG;
+      payload: {
+        workTime: number;
+        shortBreakTime: number;
+        longBreakTime: number;
+      };
     };
