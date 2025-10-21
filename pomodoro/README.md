@@ -2,7 +2,8 @@
 
 Este é um projeto de um aplicativo Pomodoro desenvolvido com React(Vite) e
 TypeScript. O objetivo do aplicativo é ajudar os usuários a gerenciar seu tempo
-de forma mais eficiente, utilizando a técnica Pomodoro.
+de forma mais eficiente, utilizando a técnica Pomodoro. E me ajudar a fixar e
+praticar os conceitos aprendidos em React.
 
 ## Conceitos importantes:
 
