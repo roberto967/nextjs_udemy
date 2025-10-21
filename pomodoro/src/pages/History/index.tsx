@@ -7,6 +7,7 @@ import { MainTemplate } from '../../templates/MainTemplate';
 import style from './style.module.css';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { formatDate } from '../../utils/formatDate';
+import { getTaskStatus } from '../../utils/getTaskSatus';
 
 export function History() {
   const { state } = useTaskContext();
@@ -48,21 +49,23 @@ export function History() {
                   <td>Concluído</td>
                   <td>Estudo</td>
                 </tr>
-                {state.tasks.map(task => (
-                  <tr key={task.id}>
-                    <td>{task.name}</td>
-                    <td>{task.duration} minutos</td>
-                    <td>{formatDate(new Date(task.startDate))}</td>
-                    <td>
-                      {task.completeDate
-                        ? 'Concluído'
-                        : task.interruptDate
-                          ? 'Interrompido'
-                          : 'Em andamento'}
-                    </td>
-                    <td>{task.type}</td>
-                  </tr>
-                ))}
+                {state.tasks.map(task => {
+                  const taskTypeDic = {
+                    workTime: 'Foco',
+                    shortBreakTime: 'Pausa Curta',
+                    longBreakTime: 'Pausa Longa',
+                  };
+
+                  return (
+                    <tr key={task.id}>
+                      <td>{task.name}</td>
+                      <td>{task.duration} minutos</td>
+                      <td>{formatDate(new Date(task.startDate))}</td>
+                      <td>{getTaskStatus(task, state.activeTask)}</td>
+                      <td>{taskTypeDic[task.type]}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
