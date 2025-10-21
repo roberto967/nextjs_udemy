@@ -2,7 +2,7 @@ import styles from './styles.module.css';
 
 type DefaultButtonProps = {
   icon: React.ReactNode;
-  color?: 'green' | 'red';
+  color?: 'green' | 'red' | 'disabled';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function DefaultButton({

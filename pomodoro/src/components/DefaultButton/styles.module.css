@@ -29,3 +29,9 @@
   background-color: var(--error);
   color: var(--text-over-error);
 }
+
+.disabled {
+  cursor: not-allowed;
+  background-color: gray !important;
+  opacity: 0.6;
+}
