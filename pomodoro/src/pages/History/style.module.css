@@ -35,3 +35,18 @@ td {
   padding: 1.6rem;
   border-bottom: 0.1rem solid var(--gray-700);
 }
+
+.thSort {
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.thSort:hover {
+  filter: brightness(80%);
+}
+
+.arrow-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  vertical-align: middle;
+}
