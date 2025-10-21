@@ -11,6 +11,8 @@ import { getTaskStatus } from '../../utils/getTaskSatus';
 import { sortTasks, type SortTaskOptions } from '../../utils/sortTasks';
 import { useEffect, useState } from 'react';
 import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
+import { toast } from 'react-toastify';
+import { showMessage } from '../../adapters/showMessage';
 
 export function History() {
   const { state, dispatch } = useTaskContext();
@@ -68,9 +70,15 @@ export function History() {
   }
 
   function handleClearHistory() {
-    if (!confirm('Tem certeza que deseja limpar o histórico?')) return;
+    toast.dismiss();
+    showMessage.confirm('Tem certeza?', confirmation => {
+      if (confirmation) {
+        dispatch({ type: TaskActionsTypes.RESET_STATE });
+      }
+    });
+    // if (!confirm('Tem certeza que deseja limpar o histórico?')) return;
 
-    dispatch({ type: TaskActionsTypes.RESET_STATE });
+    // dispatch({ type: TaskActionsTypes.RESET_STATE });
   }
 
   function setArrowIcon(field: SortTaskOptions['field']) {
