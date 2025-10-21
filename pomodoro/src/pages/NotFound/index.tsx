@@ -1,15 +1,11 @@
-import { useEffect } from 'react';
 import { Container } from '../../components/Container';
 import { GenericHtml } from '../../components/GenericHtml';
 import { Heading } from '../../components/Heading';
 import { MainTemplate } from '../../templates/MainTemplate';
-import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 export function NotFound() {
-  const { state } = useTaskContext();
-  useEffect(() => {
-    document.title = `404 - Página não encontrada ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
-  }, [state]);
+  usePageTitle('Página não encontrada ');
 
   return (
     <MainTemplate>

@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
 import { toast } from 'react-toastify';
 import { showMessage } from '../../adapters/showMessage';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 export function History() {
   const { state, dispatch } = useTaskContext();
@@ -47,9 +48,7 @@ export function History() {
     }));
   }, [state.tasks]);
 
-  useEffect(() => {
-    document.title = `Histórico ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
-  }, [state]);
+  usePageTitle('Histórico');
 
   function handleSortTasks({ field }: Pick<SortTaskOptions, 'field'>) {
     if (state.tasks.length <= 1) return;

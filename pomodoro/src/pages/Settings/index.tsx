@@ -6,18 +6,17 @@ import { Heading } from '../../components/Heading';
 import { MainTemplate } from '../../templates/MainTemplate';
 
 import style from './styles.module.css';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { showMessage } from '../../adapters/showMessage';
 import { toast } from 'react-toastify';
 import { TaskActionsTypes } from '../../contexts/TaskContext/taskActions';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 export function Settings() {
   const { state, dispatch } = useTaskContext();
 
-  useEffect(() => {
-    document.title = `Configurações ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
-  }, [state]);
+  usePageTitle('Configurações');
 
   const workTimeInputRef = useRef<HTMLInputElement>(null);
   const shortBreakTimeInputRef = useRef<HTMLInputElement>(null);

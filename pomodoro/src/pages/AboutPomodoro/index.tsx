@@ -1,17 +1,12 @@
-import { useEffect } from 'react';
 import { Container } from '../../components/Container';
 import { GenericHtml } from '../../components/GenericHtml';
 import { Heading } from '../../components/Heading';
 import { RouterLink } from '../../components/RouterLink';
 import { MainTemplate } from '../../templates/MainTemplate';
-import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 export function AboutPomodoro() {
-  const { state } = useTaskContext();
-
-  useEffect(() => {
-    document.title = `Sobre a Técnica Pomodoro ${state.activeTask ? '- ' + state.formattedSecondsRemaining : ''}`;
-  }, [state]);
+  usePageTitle('Sobre a tecnica');
 
   return (
     <MainTemplate>
