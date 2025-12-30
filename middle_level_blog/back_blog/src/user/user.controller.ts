@@ -1,4 +1,4 @@
-import { Controller, Patch, Req } from '@nestjs/common';
+import { Controller, Get, Patch, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 

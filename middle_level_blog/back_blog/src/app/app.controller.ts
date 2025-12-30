@@ -9,4 +9,15 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('config')
+  getConfig() {
+    const appName = process.env['APP_NAME'];
+    const appVersion = process.env['APP_VERSION'];
+
+    return {
+      appName,
+      appVersion,
+    };
+  }
 }

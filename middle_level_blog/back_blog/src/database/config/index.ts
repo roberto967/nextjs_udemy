@@ -7,12 +7,12 @@ import { Logger } from '@nestjs/common';
 const logger = new Logger('DatabaseConfig');
 
 dotenv.config({
-  path: `${process.env.NODE_ENV === 'development' ? '.env.development' : '.env'}`,
+  path: `${process.env['NODE_ENV'] === 'development' ? '.env.development' : '.env'}`,
 });
 
 let options: DataSourceOptions;
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env['NODE_ENV'] === 'development') {
   logger.verbose('Database config: Development');
   options = devDBConfig();
 } else {
