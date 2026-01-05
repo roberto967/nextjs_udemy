@@ -3,17 +3,22 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { HashingService } from '@/common/hashing/hashing.service';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly hashingService: HashingService,
   ) {}
 
   async failIfEmailExists(email: string) {
@@ -36,7 +41,7 @@ export class UserService {
     return user;
   }
 
-  /* async create(dto: CreateUserDto) {
+  async create(dto: CreateUserDto) {
     await this.failIfEmailExists(dto.email);
 
     const hashedPassword = await this.hashingService.hash(dto.password);
@@ -48,7 +53,7 @@ export class UserService {
 
     const created = await this.userRepository.save(newUser);
     return created;
-  } */
+  }
 
   findByEmail(email: string) {
     return this.userRepository.findOneBy({ email });
@@ -76,7 +81,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  /* async updatePassword(id: string, dto: UpdatePasswordDto) {
+  async updatePassword(id: string, dto: UpdatePasswordDto) {
     const user = await this.findOneByOrFail({ id });
 
     const isCurrentPasswordValid = await this.hashingService.compare(
@@ -92,7 +97,7 @@ export class UserService {
     user.forceLogout = true;
 
     return this.save(user);
-  } */
+  }
 
   async remove(id: string) {
     const user = await this.findOneByOrFail({ id });
