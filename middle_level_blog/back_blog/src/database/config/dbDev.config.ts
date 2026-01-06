@@ -16,8 +16,8 @@ export function devDBConfig(): DataSourceOptions {
     entities: [join(__dirname, '..', '..', '**', '*.entity.{ts,js}')],
 
     // Apenas para desenvolvimento
-    synchronize: true,
-    migrationsRun: true,
+    synchronize: process.env['DB_SYNC'] === 'true',
+    migrationsRun: process.env['DB_MIGRATE'] === 'true',
     // ssl: process.env.DB_SSL === 'true'
     //   ? { rejectUnauthorized: false }
     //   : false,

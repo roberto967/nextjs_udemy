@@ -68,5 +68,62 @@ Os mais comuns são:
 - Nível de Método: Para todo o método do controller (@UsePipes()).
 
 - Nível de Controller: Para todas as rotas daquele controller.
- 
+
 - Global: Para toda a aplicação (muito comum para o ValidationPipe).
+
+## Diferença entre partial e partialType
+
+- `Partial<T>` é um utilitário do TypeScript que transforma todas as
+  propriedades de um tipo `T` em opcionais. Ele é usado para criar tipos que
+  representam objetos onde nem todas as propriedades precisam estar presentes.
+- `PartialType` é uma função fornecida pelo NestJS (especificamente pelo
+  `@nestjs/mapped-types`) que cria um novo DTO (Data Transfer Object) com todas
+  as propriedades do DTO original marcadas como opcionais. Ele é usado
+  principalmente em cenários de atualização (update), onde você pode querer
+  permitir que apenas algumas propriedades sejam fornecidas. Exemplo de uso de
+  PartialType:
+
+```typescript
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateUserDto } from './create-user.dto';
+export class UpdateUserDto extends PartialType(CreateUserDto) {}
+```
+
+Neste exemplo, `UpdateUserDto` terá todas as propriedades de `CreateUserDto`,
+mas todas serão opcionais, facilitando a criação de endpoints de atualização
+onde nem todas as propriedades precisam ser fornecidas. Exemplo de uso de
+Partial:
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+type PartialUser = Partial<User>;
+```
+
+Neste exemplo, `PartialUser` é um tipo onde `id`, `name` e `email` são todos
+opcionais.
+
+### Em resumo
+
+- `PartialType()` é uma função do NestJS
+
+- Ela usa mapped types do TypeScript por baixo
+
+- Mas adiciona metadados de runtime
+
+📌 Por que isso é importante? Porque o NestJS trabalha com:
+
+- `class-validator`
+
+- `class-transformer`
+
+- Reflection (decorators)
+
+O `Partial<T>` do TypeScript não existe em runtime, então:
+
+- ❌ validações não funcionam
+
+- ❌ decorators não são herdados
