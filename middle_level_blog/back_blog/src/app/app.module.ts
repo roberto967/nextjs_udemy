@@ -9,7 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from 'src/database/database.module';
 import { HealthModule } from 'src/health/health.module';
 import { AllExceptionsFilter } from '@/common/filters/all-exepitions.filter';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -17,6 +18,15 @@ import { APP_FILTER } from '@nestjs/core';
       isGlobal: true,
       envFilePath:
         process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 10000,
+          limit: 10,
+          blockDuration: 5000,
+        },
+      ],
     }),
     PostModule,
     AuthModule,
@@ -29,6 +39,10 @@ import { APP_FILTER } from '@nestjs/core';
   providers: [
     AppService,
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}
