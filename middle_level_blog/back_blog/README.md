@@ -127,3 +127,7 @@ O `Partial<T>` do TypeScript não existe em runtime, então:
 - ❌ validações não funcionam
 
 - ❌ decorators não são herdados
+
+## Cross-Origin Resource Sharing (CORS) e Helmet (Cabeçalhos HTTP de segurança)
+
+## Rate Limiting - ThrottlerModule - Protegendo a API Rest contra abusos no NestJs
