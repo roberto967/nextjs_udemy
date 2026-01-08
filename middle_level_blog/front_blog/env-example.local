@@ -1,0 +1,33 @@
+# Simula demora nas consultas de BD
+SIMULATED_DELAY_MS=500
+
+# Login:
+# Permite ou não login (0 = Não, 1 = Sim)
+ALLOW_LOGIN = 1
+
+LOGIN_USER='xico'
+# Use o arquivo src/utils/generate-hashed-password.ts (npx tsx) para gerar seu hash de senha
+LOGIN_PASS='JDJiJDEwJG9yUS8zSzl6ZXZ2VlV1aS96NS81bmU0V3VZTVhvc0g2QlVwTi45a2FZSEMwSVlQYURNeXFD'
+
+LOGIN_COOKIE_NAME='login_token_simple_blog'
+
+# jwt
+JWT_SECRET_KEY='my_super_secret_key_12345'
+# Tempo para o login expirar (use o mesmo valor em seconds e string)
+# Ex: 3600 -> 1h, 600 -> 10m, 60 -> 1m, 86400 -> 1d
+LOGIN_EXPIRATION_SECONDS=86400
+LOGIN_EXPIRATION_STRING='1d'
+
+
+# img config
+# Tamanho máximo para upload de imagens em bytes
+IMAGE_UPLOAD_MAX_FILE_SIZE_BYTES=1048576
+# Tamanho máximo para upload de imagens em MB
+IMAGE_UPLOAD_MAX_FILE_SIZE_MB=1
+# Nome da pasta onde as imagens são salvas após upload
+IMAGE_UPLOAD_DIRECTORY=uploads
+# URL completa do servidor de imagens sem barra final
+IMAGE_SERVER_URL='http://localhost/uploads'
+
+# URL da API Externa (NestJS)
+API_URL='http://localhost:8000'
