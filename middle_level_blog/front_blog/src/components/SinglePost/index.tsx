@@ -1,4 +1,4 @@
-import { findPublicPostBySlugCached } from '@/lib/posts/queries/public';
+import { findPublicPostBySlugCached } from '@/lib/post/queries/public';
 import Image from 'next/image';
 import { PostHeading } from '../PostHeading';
 import { PostModel } from '@/models/post/post.model';

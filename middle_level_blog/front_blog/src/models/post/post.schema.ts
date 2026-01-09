@@ -1,3 +1,4 @@
+import { PublicUserDto } from '@/lib/user/schemas';
 import { z } from 'zod';
 
 export const PostSchema = z.object({
@@ -16,3 +17,16 @@ export const PostSchema = z.object({
 export const PostsSchema = z.object({
   posts: z.array(PostSchema),
 });
+
+export type PostModelFromApi = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  coverImageUrl: string;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+  author: PublicUserDto;
+};

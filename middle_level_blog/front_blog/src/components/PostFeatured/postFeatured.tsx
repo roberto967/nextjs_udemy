@@ -1,7 +1,7 @@
 import PostCoverImage from '../PostCoverImage';
 import { PostModel } from '@/models/post/post.model';
 import PostSumary from '../PostSumary';
-import { findAllPublicPostsCached } from '@/lib/posts/queries/public';
+import { findAllPublicPostsCached } from '@/lib/post/queries/public';
 import ErrorMessage from '../ErrorMessage';
 
 /* 

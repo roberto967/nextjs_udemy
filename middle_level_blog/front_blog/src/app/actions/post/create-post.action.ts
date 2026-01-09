@@ -1,6 +1,6 @@
 'use server';
 
-import { PostCreateSchema } from '@/app/post/validations';
+import { PostCreateSchema } from '@lib/post/schemas';
 import { makePartialPublicPost, PublicPost } from '@/dto/post/post.dto';
 import { verifyLoginSession } from '@/lib/login/manage-login';
 import { PostModel } from '@/models/post/post.model';

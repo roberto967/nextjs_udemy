@@ -1,7 +1,7 @@
 import { PostModel } from '@/models/post/post.model';
 import PostCoverImage from '../PostCoverImage';
 import PostSumary from '../PostSumary';
-import { findAllPublicPostsCached } from '@/lib/posts/queries/public';
+import { findAllPublicPostsCached } from '@/lib/post/queries/public';
 
 export default async function PostsList() {
   const posts: PostModel[] = (await findAllPublicPostsCached()).slice(1);

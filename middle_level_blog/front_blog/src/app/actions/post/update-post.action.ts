@@ -1,6 +1,6 @@
 'use server';
 
-import { PostUpdateSchema } from '@/app/post/validations';
+import { PostUpdateSchema } from '@lib/post/schemas';
 import { makePartialPublicPost, PublicPost } from '@/dto/post/post.dto';
 import { postRepository } from '@/repositories/post';
 import { getZodErrorMessages } from '@/utils/get-zod-error-messages';
