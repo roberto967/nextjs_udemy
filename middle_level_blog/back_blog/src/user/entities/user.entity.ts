@@ -23,7 +23,7 @@ export class User {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   forceLogout: boolean;
 
   @CreateDateColumn({ type: 'timestamp' })

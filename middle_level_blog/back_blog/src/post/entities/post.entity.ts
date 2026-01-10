@@ -17,7 +17,7 @@ export class Post {
   @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   slug: string;
 
   @Column({ type: 'text' })
@@ -38,7 +38,7 @@ export class Post {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'authorId' })
-  author: User;
+  author: User | null;
 }

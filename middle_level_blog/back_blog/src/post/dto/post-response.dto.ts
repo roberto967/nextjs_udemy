@@ -60,6 +60,7 @@ export class PostResponseDto {
 
   @ApiProperty({
     description: 'Informações do autor do post',
+    nullable: true,
     example: {
       id: 'u1v2w3x4-y5z6-7890-abcd-ef1234567890',
       name: 'João Silva',
@@ -70,7 +71,7 @@ export class PostResponseDto {
     id: string;
     name: string;
     email: string;
-  };
+  } | null;
 
   constructor(post: Post) {
     this.id = post.id;
@@ -82,10 +83,12 @@ export class PostResponseDto {
     this.published = post.published;
     this.createdAt = post.createdAt;
     this.updatedAt = post.updatedAt;
-    this.author = {
-      id: post.author.id,
-      name: post.author.name,
-      email: post.author.email,
-    };
+    this.author = post.author
+      ? {
+          id: post.author.id,
+          name: post.author.name,
+          email: post.author.email,
+        }
+      : null;
   }
 }

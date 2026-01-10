@@ -63,7 +63,7 @@ export const PublicPostForApiSchema = PostBaseSchema.extend({
   slug: z.string().default(''),
   title: z.string().default(''),
   excerpt: z.string().default(''),
-  author: PublicUserSchema.optional().default({
+  author: PublicUserSchema.optional().nullable().default({
     id: '',
     email: '',
     name: '',

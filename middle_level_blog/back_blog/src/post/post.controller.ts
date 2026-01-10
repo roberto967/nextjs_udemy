@@ -88,6 +88,70 @@ export class PostController {
     return new PostResponseDto(post);
   }
 
+  @Get('admin/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt-auth')
+  @ApiOperation({ summary: 'Get a post as an admin' })
+  @ApiResponse({
+    status: 200,
+    description: 'The post as an admin.',
+    type: PostResponseDto,
+  })
+  async findOneAdmin(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<PostResponseDto> {
+    const post = await this.postService.findOneAdminOrFail({ id });
+    return new PostResponseDto(post);
+  }
+
+  @Patch('/admin/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt-auth')
+  @ApiOperation({ summary: 'Update a post as an admin' })
+  @ApiResponse({
+    status: 200,
+    description: 'The post has been updated by an admin.',
+    type: PostResponseDto,
+  })
+  async updateAdmin(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Req() req: AuthenticatedRequest,
+    @Body() dto: UpdatePostDto,
+  ) {
+    const post = await this.postService.updateAdmin({ id }, dto, req.user);
+    return new PostResponseDto(post);
+  }
+
+  @Get('admin')
+  @ApiOperation({ summary: 'Get all posts' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of posts.',
+    type: [PostResponseDto],
+  })
+  async findAllAdmin() {
+    const posts = await this.postService.findAll({ published: undefined });
+    return posts.map(post => new PostResponseDto(post));
+  }
+
+  @Delete('admin/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt-auth')
+  @ApiOperation({ summary: 'Delete a post as an admin' })
+  @ApiResponse({
+    status: 200,
+    description: 'The post has been deleted by an admin.',
+    type: PostResponseDto,
+  })
+  async removeAdmin(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const post = await this.postService.removeAdmin({ id });
+    return new PostResponseDto(post);
+  }
+
   @Delete('me/:id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('jwt-auth')

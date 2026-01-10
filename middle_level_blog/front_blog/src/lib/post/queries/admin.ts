@@ -16,7 +16,7 @@ export const findAllPostAdmin = cache(async () => {
 
 export const findAllPostFromApiAdmin = cache(async () => {
   const postsResponse = await authenticatedApiRequest<PostModelFromApi[]>(
-    `/post/me/`,
+    `/post/admin`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export const findAllPostFromApiAdmin = cache(async () => {
 
 export const findPostByIdFromApiAdmin = cache(async (id: string) => {
   const postsResponse = await authenticatedApiRequest<PostModelFromApi>(
-    `/post/me/${id}`,
+    `/post/admin/${id}`,
     {
       headers: {
         'Content-Type': 'application/json',

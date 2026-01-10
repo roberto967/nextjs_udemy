@@ -1,50 +1,54 @@
 'use server';
 
-import { verifyLoginSession } from '@/lib/login/manage-login';
+import { getLoginSessionForApi } from '@/lib/login/manage-login';
+import { PublicPostForApiDto } from '@/lib/post/schemas';
+import { authenticatedApiRequest } from '@/utils/authenticated-api-request';
 // import { verifyLoginSession } from '@/lib/login/manage-login';
-import { postRepository } from '@/repositories/post';
+// import { postRepository } from '@/repositories/post';
 import { updateTag } from 'next/cache';
 
 type DeletePostActionResult = {
-  error: string;
+  errors: string[];
 };
 
 export async function deletePostAction(
   id: string,
 ): Promise<DeletePostActionResult> {
-  const isAuthenticated = await verifyLoginSession();
+  const isAuthenticated = await getLoginSessionForApi();
 
   if (!isAuthenticated) {
     return {
-      error: 'Faça login novamente em outra aba',
+      errors: ['Faça login novamente em outra aba'],
     };
   }
 
   if (!id || typeof id !== 'string') {
     return {
-      error: 'Dados inválidos',
+      errors: ['Dados inválidos'],
     };
   }
 
-  let post;
-  try {
-    post = await postRepository.delete(id);
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      return {
-        error: e.message,
-      };
-    }
+  const deletePostResponse = await authenticatedApiRequest<PublicPostForApiDto>(
+    `/post/admin/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+    },
+  );
 
+  if (!deletePostResponse.success) {
     return {
-      error: 'Erro desconhecido',
+      errors: deletePostResponse.errors,
     };
   }
 
   updateTag('posts');
-  updateTag(`post-${post.slug}`);
+  updateTag(`post-${deletePostResponse.data.slug}`);
 
   return {
-    error: '',
+    errors: [],
   };
 }

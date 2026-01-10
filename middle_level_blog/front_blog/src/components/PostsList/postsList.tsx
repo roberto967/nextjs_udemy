@@ -1,10 +1,17 @@
-import { PostModel } from '@/models/post/post.model';
 import PostCoverImage from '../PostCoverImage';
 import PostSumary from '../PostSumary';
-import { findAllPublicPostsCached } from '@/lib/post/queries/public';
+import { findAllPublicPostsByApiCached } from '@/lib/post/queries/public';
+import { PostModelFromApi } from '@/models/post/post.schema';
 
 export default async function PostsList() {
-  const posts: PostModel[] = (await findAllPublicPostsCached()).slice(1);
+  const postsResponse = await findAllPublicPostsByApiCached();
+
+  if (!postsResponse.success) {
+    console.log(postsResponse.errors);
+    return null;
+  }
+
+  const posts: PostModelFromApi[] = postsResponse.data.slice(1);
 
   if (posts.length === 0) {
     return null;

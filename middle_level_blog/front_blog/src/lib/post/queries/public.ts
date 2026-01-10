@@ -1,15 +1,33 @@
 import { PostModel } from '@/models/post/post.model';
+import { PostModelFromApi } from '@/models/post/post.schema';
 import { postRepository } from '@/repositories/post';
+import { apiRequest } from '@/utils/api-request';
 import { cacheTag } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
-export const findAllPublicPostsCached = cache(
+// export const findAllPublicPostsCached = cache(
+//   async function findAllPublicPostsCached() {
+//     'use cache';
+//     cacheTag('posts');
+
+//     return await postRepository.findAllPublic();
+//   },
+// );
+
+export const findAllPublicPostsByApiCached = cache(
   async function findAllPublicPostsCached() {
     'use cache';
     cacheTag('posts');
 
-    return await postRepository.findAllPublic();
+    const postsResponse = await apiRequest<PostModelFromApi[]>(`/post`, {
+      next: {
+        tags: ['posts'],
+        revalidate: 86400,
+      },
+    });
+
+    return postsResponse;
   },
 );
 

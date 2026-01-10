@@ -19,6 +19,8 @@ export default async function PostsListAdmin() {
     );
   }
 
+  console.log(postsRes.data);
+
   const posts = postsRes.data;
 
   if (posts.length <= 0) {

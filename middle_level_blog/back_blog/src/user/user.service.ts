@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -31,8 +31,8 @@ export class UserService {
     }
   }
 
-  async findOneByOrFail(userData: Partial<User>) {
-    const user = await this.userRepository.findOneBy(userData);
+  async findOneByOrFail(fields: FindOptionsWhere<User>) {
+    const user = await this.userRepository.findOneBy(fields);
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');

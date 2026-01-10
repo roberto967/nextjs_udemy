@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { User } from 'src/user/entities/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -21,8 +21,8 @@ export class PostService {
     private readonly postRepository: Repository<Post>,
   ) {}
 
-  async findOneOrFail(postData: Partial<Post>): Promise<Post> {
-    const post: Post = await this.findOne(postData);
+  async findOneOrFail(fields: FindOptionsWhere<Post>): Promise<Post> {
+    const post: Post = await this.findOne(fields);
 
     if (!post) {
       throw new NotFoundException('Post não encontrado');
@@ -31,18 +31,18 @@ export class PostService {
     return post;
   }
 
-  async findOne(postData: Partial<Post>): Promise<Post> {
+  async findOne(fields: FindOptionsWhere<Post>): Promise<Post> {
     const post = await this.postRepository.findOne({
-      where: postData,
+      where: fields,
       relations: ['author'],
     });
 
     return post!;
   }
 
-  async findAll(postData: Partial<Post>) {
+  async findAll(fields: FindOptionsWhere<Post>) {
     const posts = await this.postRepository.find({
-      where: postData,
+      where: fields,
       order: {
         createdAt: 'DESC',
       },
@@ -52,8 +52,8 @@ export class PostService {
     return posts;
   }
 
-  async findOneOwnedOrFail(postData: Partial<Post>, author: User) {
-    const post = await this.findOneOwned(postData, author);
+  async findOneOwnedOrFail(fields: FindOptionsWhere<Post>, author: User) {
+    const post = await this.findOneOwned(fields, author);
 
     if (!post) {
       throw new NotFoundException('Post não encontrado');
@@ -62,15 +62,33 @@ export class PostService {
     return post;
   }
 
-  async findOneOwned(postData: Partial<Post>, author: User) {
+  // 6. Alterado de Partial<Post> para FindOptionsWhere<Post>
+  async findOneOwned(fields: FindOptionsWhere<Post>, author: User) {
     const post = await this.postRepository.findOne({
       where: {
-        ...postData,
+        ...fields,
         author: { id: author.id },
       },
       relations: ['author'],
     });
 
+    return post;
+  }
+
+  async findOneAdmin(fields: FindOptionsWhere<Post>) {
+    const post = await this.postRepository.findOne({
+      where: fields,
+      relations: ['author'],
+    });
+
+    return post;
+  }
+
+  async findOneAdminOrFail(fields: FindOptionsWhere<Post>) {
+    const post = await this.findOneAdmin(fields);
+    if (!post) {
+      throw new NotFoundException('Post não encontrado');
+    }
     return post;
   }
 
@@ -111,12 +129,16 @@ export class PostService {
     return created;
   }
 
-  async update(postData: Partial<Post>, dto: UpdatePostDto, author: User) {
+  async update(
+    fields: FindOptionsWhere<Post>,
+    dto: UpdatePostDto,
+    author: User,
+  ) {
     if (Object.keys(dto).length === 0) {
       throw new BadRequestException('Dados não enviados');
     }
 
-    const post = await this.findOneOwnedOrFail(postData, author);
+    const post = await this.findOneOwnedOrFail(fields, author);
 
     post.title = dto.title ?? post.title;
     post.content = dto.content ?? post.content;
@@ -127,10 +149,36 @@ export class PostService {
     return this.postRepository.save(post);
   }
 
-  async remove(postData: Partial<Post>, author: User) {
-    const post = await this.findOneOrFail(postData);
+  async updateAdmin(
+    fields: FindOptionsWhere<Post>,
+    dto: UpdatePostDto,
+    author: User,
+  ) {
+    if (Object.keys(dto).length === 0) {
+      throw new BadRequestException('Dados não enviados');
+    }
+    const post = await this.findOneOrFail(fields);
+
+    post.title = dto.title ?? post.title;
+    post.content = dto.content ?? post.content;
+    post.excerpt = dto.excerpt ?? post.excerpt;
+    post.coverImageUrl = dto.coverImageUrl ?? post.coverImageUrl;
+    post.published = dto.published ?? post.published;
+    post.author = author ?? post.author;
+    return this.postRepository.save(post);
+  }
+
+  async removeAdmin(fields: FindOptionsWhere<Post>) {
+    const post = await this.findOneOrFail(fields);
+    await this.postRepository.delete({ id: post.id });
+    return post;
+  }
+
+  async remove(fields: FindOptionsWhere<Post>, author: User) {
+    const post = await this.findOneOrFail(fields);
+
     await this.postRepository.delete({
-      ...postData,
+      id: post.id,
       author: { id: author.id },
     });
     return post;

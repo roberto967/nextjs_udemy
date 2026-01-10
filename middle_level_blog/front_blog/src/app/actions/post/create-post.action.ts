@@ -1,18 +1,18 @@
 'use server';
 
-import { PostCreateSchema } from '@lib/post/schemas';
-import { makePartialPublicPost, PublicPost } from '@/dto/post/post.dto';
-import { verifyLoginSession } from '@/lib/login/manage-login';
-import { PostModel } from '@/models/post/post.model';
-import { postRepository } from '@/repositories/post';
+import {
+  CreatePostForApiSchema,
+  PublicPostForApiDto,
+  PublicPostForApiSchema,
+} from '@lib/post/schemas';
+import { getLoginSessionForApi } from '@/lib/login/manage-login';
 import { getZodErrorMessages } from '@/utils/get-zod-error-messages';
-import { makeSlugFromText } from '@/utils/make-slug-from-text';
-import { updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { v4 as uuid } from 'uuid';
+import { authenticatedApiRequest } from '@/utils/authenticated-api-request';
+import { updateTag } from 'next/cache';
 
 type createPostActionState = {
-  formState: PublicPost;
+  formState: PublicPostForApiDto;
   errors: string[];
   success?: string;
 };
@@ -21,7 +21,7 @@ export async function createPostAction(
   prevState: createPostActionState,
   formData: FormData,
 ): Promise<createPostActionState> {
-  const isAuthenticated = await verifyLoginSession();
+  const isAuthenticated = await getLoginSessionForApi();
 
   if (!(formData instanceof FormData)) {
     return {
@@ -30,6 +30,10 @@ export async function createPostAction(
     };
   }
 
+  // const title = formData.get('title')?.toString() || '';
+  const formDataToObj = Object.fromEntries(formData.entries());
+  const zodParsedObj = CreatePostForApiSchema.safeParse(formDataToObj);
+
   if (!isAuthenticated) {
     return {
       formState: prevState.formState,
@@ -37,43 +41,36 @@ export async function createPostAction(
     };
   }
 
-  // const title = formData.get('title')?.toString() || '';
-  const formDataToObj = Object.fromEntries(formData.entries());
-  const zodParsedObj = PostCreateSchema.safeParse(formDataToObj);
-
   if (!zodParsedObj.success) {
     const errors = getZodErrorMessages(zodParsedObj.error.format());
     return {
-      formState: makePartialPublicPost(formDataToObj),
-      errors: errors,
+      errors,
+      formState: PublicPostForApiSchema.parse(formDataToObj),
     };
   }
 
-  const validPostData = zodParsedObj.data;
-  const newPost: PostModel = {
-    ...validPostData,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    id: uuid(),
-    slug: makeSlugFromText(validPostData.title),
-  };
+  const newPost = zodParsedObj.data;
 
-  try {
-    await postRepository.create(newPost);
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      return {
-        formState: newPost,
-        errors: [e.message],
-      };
-    }
+  const createPostResponse = await authenticatedApiRequest<PublicPostForApiDto>(
+    `/post/me`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    },
+  );
 
+  if (!createPostResponse.success) {
     return {
-      formState: newPost,
-      errors: ['Erro desconhecido'],
+      formState: PublicPostForApiSchema.parse(formDataToObj),
+      errors: createPostResponse.errors,
     };
   }
+
+  const createdPost = createPostResponse.data;
 
   updateTag('posts');
-  redirect(`/admin/post/${newPost.id}?created=1`);
+  redirect(`/admin/post/${createdPost.id}?created=1`);
 }
