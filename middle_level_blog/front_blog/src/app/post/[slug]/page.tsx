@@ -1,6 +1,6 @@
 import SpinLoader from '@/components/SpinLoader';
 import SinglePost from '@/components/SinglePost';
-import { findPublicPostBySlugCached } from '@/lib/post/queries/public';
+import { findPublicPostBySlugFromApiCached } from '@/lib/post/queries/public';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -12,7 +12,17 @@ export async function generateMetadata({
   params,
 }: PostSlugPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await findPublicPostBySlugCached(slug);
+  const postResponse = await findPublicPostBySlugFromApiCached(slug);
+
+  if (!postResponse.success) {
+    console.log(postResponse.errors);
+    return {
+      title: 'Post não encontrado',
+      description: 'O post que você está procurando não foi encontrado.',
+    };
+  }
+
+  const post = postResponse.data;
 
   return {
     title: post.title,

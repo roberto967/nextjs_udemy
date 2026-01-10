@@ -21,6 +21,13 @@ const nextConfig: NextConfig = {
         pathname: '/**',
         search: '',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: process.env.NEXT_PUBLIC_IMAGE_PORT!,
+        pathname: '/**',
+        search: '',
+      },
     ],
   },
 };

@@ -1,8 +1,6 @@
 import { ManagePostForm } from '@/components/admin/ManagePostForm';
-import { makePublicPostFromDb } from '@/dto/post/post.dto';
 import { findPostByIdFromApiAdmin } from '@/lib/post/queries/admin';
 import { PublicPostForApiSchema } from '@/lib/post/schemas';
-import { PostModel } from '@/models/post/post.model';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 

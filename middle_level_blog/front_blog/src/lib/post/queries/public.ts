@@ -1,7 +1,7 @@
 import { PostModel } from '@/models/post/post.model';
 import { PostModelFromApi } from '@/models/post/post.schema';
 import { postRepository } from '@/repositories/post';
-import { apiRequest } from '@/utils/api-request';
+import { ApiRequest, apiRequest } from '@/utils/api-request';
 import { cacheTag } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
@@ -31,18 +31,36 @@ export const findAllPublicPostsByApiCached = cache(
   },
 );
 
-export const findPublicPostBySlugCached = cache(
-  async function findPublicPostBySlugCached(slug: string): Promise<PostModel> {
+// export const findPublicPostBySlugCached = cache(
+//   async function findPublicPostBySlugCached(slug: string): Promise<PostModel> {
+//     'use cache';
+//     cacheTag(`post-${slug}`);
+
+//     const post = await postRepository.findBySlugPublic(slug).catch(() => null);
+
+//     if (!post) {
+//       console.log('Erro');
+//       notFound();
+//     }
+
+//     return post;
+//   },
+// );
+
+export const findPublicPostBySlugFromApiCached = cache(
+  async function findPublicPostBySlugCached(
+    slug: string,
+  ): Promise<ApiRequest<PostModelFromApi>> {
     'use cache';
     cacheTag(`post-${slug}`);
 
-    const post = await postRepository.findBySlugPublic(slug).catch(() => null);
+    const postsResponse = await apiRequest<PostModelFromApi>(`/post/${slug}`, {
+      next: {
+        tags: [`post-${slug}`],
+        revalidate: 86400,
+      },
+    });
 
-    if (!post) {
-      console.log('Erro');
-      notFound();
-    }
-
-    return post;
+    return postsResponse;
   },
 );

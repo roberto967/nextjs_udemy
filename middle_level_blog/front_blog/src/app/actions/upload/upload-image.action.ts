@@ -1,6 +1,7 @@
 'use server';
 
-import { verifyLoginSession } from '@/lib/login/manage-login';
+import { getLoginSessionForApi } from '@/lib/login/manage-login';
+import { authenticatedApiRequest } from '@/utils/authenticated-api-request';
 import { logColor } from '@/utils/log-color';
 import { mkdir, writeFile } from 'fs/promises';
 import { extname, resolve } from 'path';
@@ -10,58 +11,65 @@ type UploadImageResult = {
   error: string | null;
 };
 
+type MakeResultParams = {
+  url?: string;
+  error?: string;
+};
+
+type MakeResultReturn = {
+  url: string;
+  error: string;
+};
+
 export async function uploadImage(
   formData: FormData,
 ): Promise<UploadImageResult> {
-  const makeResult = (url = '', error: string | null = null) => ({
-    url,
-    error,
-  });
+  const makeResult = ({
+    url = '',
+    error = '',
+  }: MakeResultParams): MakeResultReturn => ({ url, error });
+
+  const isAuthenticated = await getLoginSessionForApi();
+
+  if (!isAuthenticated) {
+    return makeResult({ error: 'Faça login novamente' });
+  }
 
   if (!(formData instanceof FormData)) {
-    return makeResult('', 'Invalid form data');
+    return makeResult({ error: 'Dados inválidos' });
   }
 
   const file = formData.get('file');
 
   if (!(file instanceof File)) {
-    return makeResult('', 'Arquivo inválido');
+    return makeResult({ error: 'Arquivo inválido' });
   }
 
-  if (file.size > Number(process.env.IMAGE_UPLOAD_MAX_FILE_SIZE_BYTES)) {
-    return makeResult('', 'Arquivo muito grande');
+  const uploadMaxSize =
+    Number(process.env.NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE) || 921600;
+  if (file.size > uploadMaxSize) {
+    return makeResult({ error: 'Arquivo muito grande' });
   }
 
   if (!file.type.startsWith('image/')) {
-    return makeResult('', 'Imagem inválida');
+    return makeResult({ error: 'Imagem inválida' });
   }
 
-  const imageExtension = extname(file.name);
-  const uniqueImageName = `${Date.now()}${imageExtension}`;
-
-  const uploadFullPath = resolve(
-    process.cwd(),
-    'public',
-    process.env.IMAGE_UPLOAD_DIRECTORY!,
+  const uploadResponse = await authenticatedApiRequest<{ url: string }>(
+    `/upload`,
+    {
+      method: 'POST',
+      body: formData,
+    },
   );
-  await mkdir(uploadFullPath, { recursive: true });
 
-  const fileArrayBuffer: ArrayBuffer = await file.arrayBuffer();
-  const buffer: Buffer = Buffer.from(fileArrayBuffer);
-
-  const fileFullPath = resolve(uploadFullPath, uniqueImageName);
-
-  await writeFile(fileFullPath, buffer);
-
-  const url = `${process.env.IMAGE_SERVER_URL!}/${uniqueImageName}`;
-
-  const isAuthenticated = await verifyLoginSession();
-
-  if (!isAuthenticated) {
-    return makeResult('', 'Faça login novamente em outra aba');
+  if (!uploadResponse.success) {
+    return makeResult({ error: uploadResponse.errors[0] });
   }
 
-  return makeResult(url);
+  const url = `${process.env.IMAGE_SERVER_URL}${uploadResponse.data.url}`;
+
+  return makeResult({ url });
 }
 
 export async function deleteImage(imageUrl: string): Promise<boolean> {
