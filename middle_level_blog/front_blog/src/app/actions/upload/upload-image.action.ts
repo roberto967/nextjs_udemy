@@ -3,8 +3,7 @@
 import { getLoginSessionForApi } from '@/lib/login/manage-login';
 import { authenticatedApiRequest } from '@/utils/authenticated-api-request';
 import { logColor } from '@/utils/log-color';
-import { mkdir, writeFile } from 'fs/promises';
-import { extname, resolve } from 'path';
+import { resolve } from 'path';
 
 type UploadImageResult = {
   url: string;

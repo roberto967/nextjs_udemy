@@ -1,7 +1,6 @@
 import { findPublicPostBySlugFromApiCached } from '@/lib/post/queries/public';
 import Image from 'next/image';
 import { PostHeading } from '../PostHeading';
-import PostDate from '../PostDate';
 import SafeMarkdown from '../SafeMarkdown';
 import { PostModelFromApi } from '@/models/post/post.schema';
 

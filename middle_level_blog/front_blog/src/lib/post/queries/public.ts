@@ -1,9 +1,6 @@
-import { PostModel } from '@/models/post/post.model';
 import { PostModelFromApi } from '@/models/post/post.schema';
-import { postRepository } from '@/repositories/post';
 import { ApiRequest, apiRequest } from '@/utils/api-request';
 import { cacheTag } from 'next/cache';
-import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
 // export const findAllPublicPostsCached = cache(
