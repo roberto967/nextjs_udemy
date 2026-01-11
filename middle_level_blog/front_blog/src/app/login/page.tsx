@@ -1,6 +1,8 @@
 import { LoginForm } from '@/components/LoginForm';
 import ErrorMessage from '@/components/ErrorMessage';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+import { getLoginSessionForApi } from '@/lib/login/manage-login';
 
 export const metadata: Metadata = {
   title: 'Login',
@@ -16,6 +18,12 @@ export default async function AdminLoginPage() {
         content='Libere o sistema de login usando ALLOW_LOGIN'
       />
     );
+  }
+
+  const isAuthenticated = await getLoginSessionForApi();
+
+  if (isAuthenticated) {
+    redirect('/admin/post');
   }
 
   return <LoginForm />;

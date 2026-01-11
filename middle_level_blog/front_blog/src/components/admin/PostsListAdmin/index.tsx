@@ -19,7 +19,7 @@ export default async function PostsListAdmin() {
     );
   }
 
-  console.log(postsRes.data);
+  // console.log(postsRes.data);
 
   const posts = postsRes.data;
 

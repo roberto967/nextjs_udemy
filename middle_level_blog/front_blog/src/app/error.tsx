@@ -23,7 +23,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <p>Ocorreu um erro inesperado.</p>
           <button
             onClick={() => {
-              console.log('tentou');
+              // console.log('tentou');
               reset();
             }}
           >

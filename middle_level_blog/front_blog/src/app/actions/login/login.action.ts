@@ -76,7 +76,7 @@ export async function loginAction(
     };
   }
 
-  console.log(loginResponse.data);
+  // console.log(loginResponse.data);
 
   await createLoginSessionFromApi(loginResponse.data.accessToken);
 

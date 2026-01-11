@@ -2,8 +2,6 @@
 
 import { revalidateExampleAction } from '../../actions/revalidate.example';
 
-// // export const dynamic = 'force-static';
-
 export default async function ExemploPage({
   params,
 }: {
