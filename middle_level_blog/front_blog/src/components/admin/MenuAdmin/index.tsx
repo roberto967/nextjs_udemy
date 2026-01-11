@@ -9,6 +9,7 @@ import {
   LogOutIcon,
   MenuIcon,
   PlusIcon,
+  UserPenIcon,
 } from 'lucide-react';
 import { useEffect, useState, useTransition } from 'react';
 import MenuItem, { MenuItemProps } from './menuItem';
@@ -31,6 +32,11 @@ const menuItens: MenuItemProps[] = [
     title: 'Criar post',
     link: '/admin/post/new',
     icon: <PlusIcon />,
+  },
+  {
+    title: 'Seus dados',
+    icon: <UserPenIcon />,
+    link: '/admin/user',
   },
 ];
 

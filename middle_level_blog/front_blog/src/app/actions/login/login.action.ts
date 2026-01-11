@@ -8,6 +8,7 @@ import {
 import { LoginSchema } from '@/lib/login/schemas';
 import { apiRequest } from '@/utils/api-request';
 import { getZodErrorMessages } from '@/utils/get-zod-error-messages';
+import { verifyHoneypotInput } from '@/utils/verify-honeypot-input';
 // import { asyncDelay } from '@/utils/async-delay';
 import { redirect } from 'next/navigation';
 
@@ -29,7 +30,14 @@ export async function loginAction(
     };
   }
 
-  // await asyncDelay(5000); // Vou manter
+  const isBot = await verifyHoneypotInput(formData, 5000);
+
+  if (isBot) {
+    return {
+      email: '',
+      errors: ['nice'],
+    };
+  }
 
   if (!(formData instanceof FormData)) {
     return {

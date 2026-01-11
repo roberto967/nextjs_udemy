@@ -9,6 +9,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { PublicUserSchema } from '@/lib/user/schemas';
 import { createUserAction } from '@actions/user/create-user.action';
+import { HoneypotInput } from '../HoneypotInput';
 
 export function CreateUserForm() {
   const [isVisiblePassword, setVisiblePassword] = useState(false);
@@ -78,6 +79,8 @@ export function CreateUserForm() {
           disabled={isPending}
           required
         />
+
+        <HoneypotInput />
 
         <Button disabled={false} type='submit' className='mt-4'>
           <UserRoundIcon />
